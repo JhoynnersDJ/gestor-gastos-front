@@ -45,7 +45,7 @@ function App() {
       }
       
       try {
-        const resTasa = await axios.get('http://localhost:3000/api/tasa-bcv');
+        const resTasa = await axios.get('https://gestor-gastos-back.onrender.com/api/tasa-bcv');
         if (resTasa.data.tasa) setTasaBCV(resTasa.data.tasa);
       } catch (err) {
         console.error("Error obteniendo tasa BCV:", err);
@@ -64,7 +64,7 @@ function App() {
 
   const obtenerBalance = async (userId) => {
     try {
-      const res = await axios.get(`http://localhost:3000/api/transacciones/${userId}/balance`);
+      const res = await axios.get(`https://gestor-gastos-back.onrender.com/api/transacciones/${userId}/balance`);
       setBalance(res.data);
     } catch (err) { console.error(err); }
   };
@@ -72,7 +72,7 @@ function App() {
   const obtenerTransacciones = async (userId) => {
     try {
       const [anio, mes] = fechaFiltro.split('-');
-      const res = await axios.get(`http://localhost:3000/api/usuarios/${userId}/transacciones`, {
+      const res = await axios.get(`https://gestor-gastos-back.onrender.com/api/usuarios/${userId}/transacciones`, {
         params: { mes, anio }
       });
       setTransacciones(res.data);
@@ -82,7 +82,7 @@ function App() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:3000/api/usuarios/login', { email, password });
+      const res = await axios.post('https://gestor-gastos-back.onrender.com/api/usuarios/login', { email, password });
       const u = res.data.usuario;
       localStorage.setItem('usuarioGestor', JSON.stringify(u));
       setUser(u);
@@ -100,7 +100,7 @@ function App() {
   const guardarMovimiento = async (e) => {
     if (e) e.preventDefault();
     try {
-      await axios.post('http://localhost:3000/api/transacciones', {
+      await axios.post('https://gestor-gastos-back.onrender.com/api/transacciones', {
         ...nuevoMovimiento,
         usuario_id: user.id,
         monto: Number(nuevoMovimiento.monto),
@@ -116,7 +116,7 @@ function App() {
   const eliminarTransaccion = async (id) => {
     if (window.confirm("¿Borrar este movimiento?")) {
       try {
-        await axios.delete(`http://localhost:3000/api/transacciones/${id}`);
+        await axios.delete(`https://gestor-gastos-back.onrender.com/api/transacciones/${id}`);
         obtenerBalance(user.id);
         obtenerTransacciones(user.id);
       } catch (err) { alert("Error"); }
